@@ -1,0 +1,87 @@
+<label>Server Name</label>
+<!-- <input 
+    type="text"
+    class="form-control"
+    (input)="onUpdateServerName($event)"    
+> -->
+<input
+    type="text"
+    class="form-control"
+    [(ngModel)]="serverName"
+/>
+<p>{{serverName}}</p>   
+
+<button 
+    class="btn btn-primary"
+    [disabled]="!allowNewServer"
+    (click)="onCreateServer()"
+>
+    Add new server
+</button>
+<p>{{allowNewServer}} >>>> string interpolation</p>
+<p [innerText]="allowNewServer"> </p> <!-- property binding -->
+<p>{{serverCreationStatus}}</p>
+// structural directive: starts with * >>>>> means that it changes the DOM >> if it adds an element or not 
+<!-- <p *ngIf="serverCreated"> Server was created! (strcutural directive)(conditional rendering)</p> -->
+<p *ngIf="serverCreated; else noServer"> Server was created! (strcutural directive)(conditional rendering)</p>
+<ng-template #noServer>
+    <p>No server</p>
+</ng-template>
+<app-server *ngFor="let server of servers"></app-server>
+
+
+
+
+
+
+
+
+
+
+
+<hr>
+<hr>
+<hr>
+<hr>
+<p>--------------------- Assignment ---------------------</p>
+4 types of binding >>>> string interpolation, property binding, event binding, 2-way binding >>> all used in this example
+<label>Username</label>
+<input
+    type="text"
+    class="form-control"
+    [(ngModel)]="userName"
+/>
+<p>{{userName}}</p>
+<button 
+    class="btn btn-primary"
+    (click)="resetUserName()"
+    [disabled]="!userName"    
+    >
+    <!-- (click)="userName = ''" -->
+    Reset User
+</button>
+
+
+
+
+<hr>
+<hr>
+<hr>
+<hr>
+<p>--------------------- Assignment 2: example on structural and attribute directives ---------------------</p>
+
+<button 
+    class="btn btn-primary"
+    (click)="onToggle()"
+    >
+    <!-- (click)="showPassword = !showPassword" -->
+    Display Details
+</button>
+<p *ngIf="showPassword">Secret Password = Tuna</p>
+<div 
+    *ngFor="let logItem of logs; let i = index"
+    [ngStyle]="{backgroundColor: i >= 5 ? 'blue' : 'transparent'}"
+    [ngClass]="{whiteColor: i >= 5}"
+>
+    {{i}}:::::{{logItem}}
+</div>
