@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <ul class="nav nav-tabs">
+        <li role="presentation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <!-- problem: -->
+          <!-- all the next paths are part of the localhost:4200/   
+            so it will add active class to localhost:4200/ always which is the first link-->
+          <!-- solution -->
+          <!-- routerLinkActiveOptions: only add the active class if the whole path is equal to localhost:4200/ -->
+          <a 
+            routerLink="/">Home</a>
+        </li>
+        <li role="presentation" routerLinkActive="active">
+          <a 
+            routerLink="/servers">Servers</a>
+        </li>
+        <li role="presentation" routerLinkActive="active">
+          <a 
+            [routerLink]="['/users']">Users</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
