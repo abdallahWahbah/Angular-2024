@@ -1,0 +1,23 @@
+https://www.simplilearn.com/tutorials/angular-tutorial/angular-interview-questions
+
+https://www.google.com/search?q=zone.js&oq=zone.js&gs_lcrp=EgZjaHJvbWUyCQgAEEUYORiABDIHCAEQABiABDIHCAIQABiABDIHCAMQABiABDIHCAQQABiABDIHCAUQABiABDIHCAYQABiABDIHCAcQABiABDIHCAgQABiABDIHCAkQABiABKgCALACAA&sourceid=chrome&ie=UTF-8
+
+- difference between type and interface
+- what is dependency injection
+- types of data binding
+- 
+------------------------------------------
+
+A quick tip that helps me remember what they do -
+
+HostBinding('value') myValue; is exactly the same as [value]="myValue"
+And
+HostListener('click') myClick(){ } is exactly the same as (click)="myClick()"
+
+HostBinding and HostListener are written in directives and the other ones (...) and [..] are written inside templates (of components).
+
+------------------------------------------
+
+------------------------------------------
+
+------------------------------------------

@@ -16,7 +16,8 @@ export class BetterDirectiveDirective implements OnInit{
   
   @Input() defaultColor: string = "transparent"
   @Input() highlightColor: string = "blue"
-  @HostBinding("style.backgroundColor") backgroundColor: string
+  @HostBinding("style.backgroundColor") backgroundColor: string 
+  // HostBinding is a decorator that allows you to bind a property of the host element to a property in the directive class
 
   // add this class to declaration array in app.module.ts
   constructor(private elementRef: ElementRef, private renderer: Renderer2) { }

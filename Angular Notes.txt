@@ -1,0 +1,355 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Section 1
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// installing angular globally (for first time only)
+# npm install -g @angular/cli
+
+// creating a new application
+# ng new my-first-app --no-strict --standalone false --routing false
+
+// running the application
+# ng serve
+
+// bootstrap
+# npm install --save bootstrap@3
+// of course you can install only bootstrap not a specified version
+add it to angular.json in styles array
+"styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.css"
+            ],
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Section 2: generate component, ngIf, gnClass, ngStyle, ngFor, ngModel
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// creating a new component
+- create compName.component.ts
+- create compName.component.html and put html elements in it
+- add the component to declarations array in app.module
+- use the comName selector in another component
+
+// creating a component using CLI
+# ng generate component componentName (without "Component") >>>> server will be serverComponent
+or
+# ng g c componentName --skip-tests
+
+// string interpolation vs property binding
+
+<p>{{allowNewServer}} >>>> string interpolation</p>
+<p [innerText]="allowNewServer"> </p> <!-- property binding -->
+<button [disabled]="!someBooleanVaribaleInTSFile"></button>
+
+// 4 types of binding >>>> string interpolation, property binding, event binding, 2-way binding >>> all used in this example
+<label>Username</label>
+<input
+    type="text"
+    class="form-control"
+    [(ngModel)]="userName" >>>>>>>>>>>>>>>> 2-way binding
+/>
+<p>{{userName}}</p> >>>>>>>>>>>> string interpolation
+<button 
+    class="btn btn-primary"
+    (click)="resetUserName()" >>>>>>>>>>>>>>>>> event binding
+    [disabled]="!userName"    >>>>>>>>>>>>> property binding
+    >
+    <!-- (click)="userName = ''" -->
+    Reset User
+</button>
+
+// // // structural vs attribute directive
+
+// structural directive: starts with * >>>>> means that it changes the DOM >> if it adds an element or not 
+<p *ngIf="serverCreated">strcutural directive(conditional rendering)</p>
+
+<p *ngIf="serverCreated; else noServer"> Server was created! (strcutural directive)(conditional rendering)</p>
+<ng-template #noServer>
+    <p>No server</p>
+</ng-template>
+
+// attribute directive: doesn't add or remove elements, it only changes the element it was placed on
+// changing style dynamically
+<p [ngStyle]="{backgroundColor: getColor()}">hello</p>
+
+// example on structural and attribute directives
+<button 
+    class="btn btn-primary"
+    (click)="onToggle()"
+    >
+    <!-- (click)="showPassword = !showPassword" -->
+    Display Details
+</button>
+<p *ngIf="showPassword">Secret Password = Tuna</p>
+<div 
+    *ngFor="let logItem of logs; let i = index"
+    [ngStyle]="{backgroundColor: i >= 5 ? 'blue' : 'transparent'}"
+    [ngClass]="{whiteColor: i >= 5}"
+>
+    {{i}}:::::{{logItem}}
+</div>
+
+
+- if you wanted to apply css styles globally, add encapsulation: ViewEncapsulation.None to the decorator of the element
+
+
+
+// building a directive by cli
+# ng g d directive-name
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Section 9: Services & Dependency Injection
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// how to use service
+- create service
+- in the class you want to use the service in, import it and add it to the providers array in the Component Decorator
+- instanciate a private property in the constructor of type of the service 
+// if you wanted to use the same instance of the service of many components, provide the service in the providers array of the app.component.ts (Hierarchical Injector: all children have access to the same instance) and don't import it in the providers array of the components you use (only in app.component.ts)(app.module.ts is higher level, but it is okay)
+
+
+// nested services
+- if you have a parent service and a child service and you want to use a method of a child in the parent, add @Injectable() to the parent service and use the child in the parent easily
+- don't forget to add the child service in the providers array (in app.module.ts if you want this place)
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Section 11: Routing
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+(((absolute path)))
+      <a routerLink="/servers">Servers</a>      >>>>>>>>> localhost:4200/servers >>>> 
+(((relative path)))
+- if you didn't write the "/", it will use the path as relative path >>> meaning that it will add "/servers" to the current path >>> localhost:4200/currentpath/currentId/servers
+
+
+// guarding
+- create auth.service.ts
+- create auth-guard.service.ts that implements CanActivate
+- add both to the providers array of the app.module.ts
+- open app-routes and add canActivate:[AuthGuard] to the proper path
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Section 13: Observables
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// observables are constructs to which you subscribe to be informed about changes in data
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Section 15: Forms
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// TD (template driven)
+
+// get final values
+<form (ngSubmit)="onSubmit(form)" #form="ngForm">
+	
+	<input 
+              type="text" 
+              id="username" 
+              class="form-control"
+              ngModel
+              name="username"
+        >
+</form>
+
+onSubmit(form: NgForm)
+{
+  console.log(form.value)
+}
+
+// one way binding (to give an initial value or a default value)
+<select 
+            id="secret" 
+            class="form-control"
+            [ngModel]="defaultQuestion" >>>>>>>>> defaultQuestion is a property that has a value of "pet" or "teacher"
+            name="secret"
+          >
+            <option value="pet">Your first Pet?</option>
+            <option value="teacher">Your first teacher?</option>
+          </select>
+
+
+// two way binding (for initial value and presenting the value in the screen)
+<textarea 
+            [(ngModel)]="answer" >>>>>>>>>> answer is a property that has an initial value and can be represented on the screen
+            name="questionAnswer" 
+            rows="3"
+            class="form-control"
+            ></textarea>
+        <p>Your answer (using two way binding) in the text area is  {{answer}}</p>
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Section 17: Pipes
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+pipes: a feature that allows you to transform the output
+
+
+// create pipe using cli
+# ng generate pipe pipeName --skip-tests
+# ng g p pipeName --skip-tests
+
+// date
+https://www.telerik.com/blogs/angular-basics-date-pipe-formats-101-examples
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Section 18: http
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// intercept runs its code right before the request leaves our application
+// we use interceptors when we need to do something before making the request (all requests)
+// mostly used to make authentication
+// to use this interceptor >>>> we add it in the providers in app.module.ts
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Section 19: Authentication
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// firebase auth API
+https://firebase.google.com/docs/reference/rest/auth#section-create-email-password
+
+// free loading spinners
+https://loading.io/css/
+
+
+
+// modules: a way of bundling angular building blocks together
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Section 23: Deploying angular app
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Environment Variables
+- create a new folder (environmets if it doesn't exist) and create environment.ts, environment.prod.ts
+- add variables and use it wherever you want
+
+// deoplying to firebase
+
+# ng build
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Section 26: NgRx (Redux)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#ng add @ngrx/store
+// default setup (press enter)
+
+// Selectors The Selectors are pure functions used for obtaining slices of store state. 
+// Reducers are the things that change data in the store 
+// Reducers The Reducers in NgRx are responsible for handling transitions from one state to the next state in your application.
+// Action: To trigger changes in the Store, we can dispatch new actions.
+// Effects: For asynchronous code, like HTTP requests we use effects.
+
+
+// to use side effect
+
+#ng add @ngrx/effects
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Angular Universal
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Creating Angular SSR Apps with Angular 17+
+If you want to create a new Angular project that comes with Universal / SSR enabled out of the box, you can run ng new <project-name> --ssr.
+
+// to add universal to angular version that are 
+
+// 16 or less
+# ng add @nguniversal/express-engine
+
+// 17+ 
+# ng add @angular/ssr
+
+# npm run dev:ssr
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Animations
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+# npm install --save @angular/animations
+
+- Add the BrowserAnimationsModule  to your imports[]  array in AppModule
+- import { BrowserAnimationsModule } from '@angular/platform-browser/animations'  (in the AppModule!)
+- You then import trigger , state , style  etc from @angular/animations  instead of @angular/core
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Service Workers
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// to add a page when there is not internet connection
+
+# ng add @angular/pwa
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////// Material Design components for Angular
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+https://material.angular.io/guide/getting-started
+https://material.angular.io/components/categories
+
+# ng add @angular/material
+
+
+
+
+
+
+// angular material icons
+
+# ng add @angular/material
+
+https://fonts.google.com/icons
+
+
+in app.module.ts
+import {MatIconModule} from '@angular/material/icon';
+imports: [MatIconModule]
+
+<mat-icon style="color: white;">home</mat-icon>
+
+
+------------------------ bootstrap icons
+
+# npm install bootstrap-icons
+# npm install bootstrap
+
+add to style.scss
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons";
+
+https://icons.getbootstrap.com/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
